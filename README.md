@@ -41,31 +41,31 @@ This dashboard empowers leadership and business analysts to monitor key insuranc
 
 ## 📊 Dashboard Pages & Visual Walkthrough
 
-### 1. Executive Insights
-A high-level executive pulse highlighting core top-line metrics: total premium income, customer reach, policy count, and portfolio-level expected settlement rate.
-
-![Executive Insights](./Executive%20Insights.png)
-
----
-
-### 2. Insurance Performance Overview (General View)
+### 1. Insurance Performance Overview (General View)
 A cross-sectional operational cockpit tracking monthly trend trajectories, city-level market contributions, and customer distribution by age group.
 
 ![Insurance Performance Overview](./Insurance%20Performance%20Overview.png)
 
 ---
 
-### 3. Sales Mode Analysis
+### 2. Sales Mode Analysis
 A channel-performance deep dive breaking down customer acquisition and revenue share across distribution channels (Offline Agents, Online App, Online Website, Offline Direct).
 
 ![Sales Performance](./sales%20view.png)
 
 ---
 
-### 4. Age Group Analysis & Risk Exposure
+### 3. Age Group Analysis & Risk Exposure
 An actuarial and demographic segmentation evaluating policy affinity, sales channel preferences, customer volume, and expected settlement rates across age cohorts.
 
 ![Age Group Analysis](./Age%20Group%20Analysis.png)
+
+---
+
+### 4. Executive Insights
+A high-level executive pulse highlighting core top-line metrics: total premium income, customer reach, policy count, and portfolio-level expected settlement rate.
+
+![Executive Insights](./Executive%20Insights.png)
 
 ---
 
@@ -160,10 +160,10 @@ An actuarial and demographic segmentation evaluating policy affinity, sales chan
 ├── project.SemanticModel/                     # Semantic Model (TMDL schema & DAX measures)
 ├── dax_metrics_list.xlsx                      # DAX metrics documentation
 ├── Shield_Insurance_Dashboard_Guide_for_Mathew.docx  # Handover & executive user guide
-├── Executive Insights.png                     # Screenshot: Executive Overview Page
 ├── Insurance Performance Overview.png         # Screenshot: General View Page
 ├── sales view.png                             # Screenshot: Sales Channel Performance Page
 ├── Age Group Analysis.png                     # Screenshot: Demographic & Risk Analysis Page
+├── Executive Insights.png                     # Screenshot: Executive Overview Page
 └── README.md                                  # Project documentation & insights
 ```
 
