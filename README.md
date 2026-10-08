@@ -2,6 +2,10 @@
 
 An end-to-end Power BI analytics project evaluating portfolio performance, revenue drivers, customer demographics, policy distributions, and sales channel effectiveness for Shield Insurance.
 
+[![Live Dashboard](https://img.shields.io/badge/Power_BI-Live_Interactive_Dashboard-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)](https://app.powerbi.com/view?r=eyJrIjoiODhhZDNkYmItNDRkNy00ZmJiLTk1MDYtMzgwMjc3YTJlYjBhIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9)
+
+> 🌐 **Interactive Report**: [Experience the live dashboard on Power BI Service](https://app.powerbi.com/view?r=eyJrIjoiODhhZDNkYmItNDRkNy00ZmJiLTk1MDYtMzgwMjc3YTJlYjBhIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9)
+
 Developed using Power BI Project (`.pbip`) format with TMDL (Tabular Model Definition Language) and JSON report definitions for full Git version control.
 
 ---
@@ -137,8 +141,13 @@ A high-level executive pulse highlighting core top-line metrics: total premium i
 
 ---
 
-## 🚀 How to Run the Project
+## 🚀 Live Dashboard & Local Setup
 
+### 🌐 1. Live Interactive Dashboard
+You can explore and interact with all filters, drill-downs, and pages directly in your browser:
+👉 **[Open Live Shield Insurance Dashboard](https://app.powerbi.com/view?r=eyJrIjoiODhhZDNkYmItNDRkNy00ZmJiLTk1MDYtMzgwMjc3YTJlYjBhIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9)**
+
+### 💻 2. Local Setup (Power BI Desktop)
 1. **Prerequisites**:
    * [Power BI Desktop](https://powerbi.microsoft.com/desktop/) (supports `.pbip` format).
 2. **Opening the Report**:
