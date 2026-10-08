@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
-  "name": "landing_hero",
+  "name": "981e1b2483ccf25ad966",
   "position": {
     "x": 0,
     "y": 0,
     "z": 0,
-    "height": 430,
-    "width": 1920,
-    "tabOrder": 0
+    "height": 75.460524563972854,
+    "width": 507.97816535747575
   },
   "visual": {
     "visualType": "shape",
@@ -47,5 +46,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "parentGroupName": "5a3858198f7d2a068cfe"
 }

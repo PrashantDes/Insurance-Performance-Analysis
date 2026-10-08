@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
-  "name": "b85ec023676cb5ea59ab",
+  "name": "5f4939afd4b7744cfac2",
   "position": {
-    "x": 470.94454799627226,
-    "y": 305.52309945413396,
-    "z": 7000,
-    "height": 99,
-    "width": 121,
-    "tabOrder": 7000
+    "x": 394.68192033238972,
+    "y": 8.2118738411600365,
+    "z": 15000,
+    "height": 59.691176470588239,
+    "width": 93.80898876404494
   },
   "visual": {
     "visualType": "image",
@@ -20,7 +19,7 @@
                 "name": {
                   "expr": {
                     "Literal": {
-                      "Value": "'icon_age_group_white.png'"
+                      "Value": "'ChatGPT Image Oct 8, 2026, 12_42_30 PM.png'"
                     }
                   }
                 },
@@ -29,7 +28,7 @@
                     "ResourcePackageItem": {
                       "PackageName": "RegisteredResources",
                       "PackageType": 1,
-                      "ItemName": "icon_age_group_white05513877244476573.png"
+                      "ItemName": "ChatGPT_Image_Oct_8,_2026,_12_23235932926798453.png"
                     }
                   }
                 },
@@ -67,7 +66,7 @@
             "navigationSection": {
               "expr": {
                 "Literal": {
-                  "Value": "'f81a0152664277e03111'"
+                  "Value": "'executive_insights_page'"
                 }
               }
             }
@@ -76,5 +75,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "parentGroupName": "5a3858198f7d2a068cfe"
 }
