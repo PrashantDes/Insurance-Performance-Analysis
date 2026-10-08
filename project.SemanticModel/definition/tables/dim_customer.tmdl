@@ -1,0 +1,85 @@
+table dim_customer
+	lineageTag: 592791d3-996f-47f4-adce-0da142fc9f61
+
+	/// Average expected settlement % of the customers in the current filter, using the settlement rate for each customer's age. Customers aged 17 have no rate and are skipped.
+	measure 'Expected Settlement %' = AVERAGEX(dim_customer, RELATED(fact_settlements[settlement %]))
+		formatString: 0.0%
+		displayFolder: 4 Age Group
+		lineageTag: dea6a3c5-0582-4805-bf42-ce828db55b1b
+
+	column customer_code
+		dataType: string
+		lineageTag: ab722569-7ed8-4ec8-b5a3-1b11f374dc9d
+		summarizeBy: none
+		sourceColumn: customer_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column dob
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 5c3c2241-87e4-4d40-b001-2a252b16f767
+		summarizeBy: none
+		sourceColumn: dob
+
+		variation Variation
+			isDefault
+			relationship: 98054dbf-fefd-4a03-9508-848af2d73c3c
+			defaultHierarchy: LocalDateTable_704161f2-d81b-4a60-89b4-03b8fe2d4fd2.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column city
+		dataType: string
+		lineageTag: 804bbdbc-3b2c-4bab-a21b-24d4907e5880
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column age =
+			VAR ref = MAX(fact_premiums[date])
+			VAR birthdayThisYear = DATE(YEAR(ref), MONTH([dob]), DAY([dob]))
+			RETURN DATEDIFF([dob], ref, YEAR) - IF(birthdayThisYear > ref, 1, 0)
+		dataType: int64
+		formatString: 0
+		lineageTag: 0b680c71-da82-4093-93b0-c2bc68793f00
+
+	column age_group =
+			SWITCH(TRUE(),
+			    [age] <= 24, "18-24",
+			    [age] <= 30, "25-30",
+			    [age] <= 40, "31-40",
+			    [age] <= 50, "41-50",
+			    [age] <= 65, "51-65",
+			    "65+")
+		dataType: string
+		lineageTag: cb77d361-a753-4e50-af6f-6d8aad989c2e
+		sortByColumn: age_group_sort
+
+	column age_group_sort =
+			SWITCH(TRUE(),
+			    [age] <= 24, 1,
+			    [age] <= 30, 2,
+			    [age] <= 40, 3,
+			    [age] <= 50, 4,
+			    [age] <= 65, 5,
+			    6)
+		dataType: int64
+		formatString: 0
+		lineageTag: d598a2a6-2a14-487d-b7a3-efdbfd6a8a0a
+
+	partition dim_customer = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\dim_customer.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"customer_code", type text}, {"dob", type date}, {"city", type text}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

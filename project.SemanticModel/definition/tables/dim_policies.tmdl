@@ -1,0 +1,41 @@
+table dim_policies
+	lineageTag: 4a2d2199-ea4d-4a6e-9a25-955d5d1eca59
+
+	column policy_id
+		dataType: string
+		lineageTag: 5405c1d8-efe1-46fa-89b4-294f212a2d8f
+		summarizeBy: none
+		sourceColumn: policy_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column base_coverage_amt(INR)
+		dataType: int64
+		formatString: 0
+		lineageTag: 7ac5e72c-d282-4a48-ac40-2a2bc0e4646f
+		summarizeBy: none
+		sourceColumn: base_coverage_amt(INR)
+
+		annotation SummarizationSetBy = Automatic
+
+	column base_premium_amt(INR)
+		dataType: int64
+		formatString: 0
+		lineageTag: 4b0a08c7-8370-41b1-8efd-a51c6efece6b
+		summarizeBy: none
+		sourceColumn: base_premium_amt(INR)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition dim_policies = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\dim_policies.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"policy_id", type text}, {"base_coverage_amt(INR)", Int64.Type}, {"base_premium_amt(INR)", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

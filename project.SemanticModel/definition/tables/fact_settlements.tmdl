@@ -1,0 +1,42 @@
+table fact_settlements
+	lineageTag: 7d803bbc-f356-45df-af52-227f8466a699
+
+	column age
+		dataType: int64
+		formatString: 0
+		lineageTag: 02d42d7b-c732-49f9-b8f2-edfea32c937b
+		summarizeBy: sum
+		sourceColumn: age
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'settlement %'
+		dataType: double
+		lineageTag: 49319473-e494-4294-86e1-578358036238
+		summarizeBy: sum
+		sourceColumn: settlement %
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Column1
+		dataType: string
+		lineageTag: 129898a0-7422-4281-b279-3dbe14050c12
+		summarizeBy: none
+		sourceColumn: Column1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_settlements = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\fact_settlements.csv"), [Delimiter = ",", Columns = 3, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"age", Int64.Type}, {"settlement %", Percentage.Type}, {"", type text}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

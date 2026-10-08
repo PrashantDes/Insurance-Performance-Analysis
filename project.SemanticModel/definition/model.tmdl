@@ -1,0 +1,27 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	valueFilterBehavior: independent
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_QueryOrder = ["dim_customer","dim_date","dim_policies","fact_premiums","fact_settlements"]
+
+annotation PBI_ProTooling = ["DevMode","MCP-PBIModeling"]
+
+ref table dim_customer
+ref table DateTableTemplate_d837a662-f89c-4b27-98e2-10a7532e3880
+ref table LocalDateTable_704161f2-d81b-4a60-89b4-03b8fe2d4fd2
+ref table dim_date
+ref table dim_policies
+ref table fact_premiums
+ref table LocalDateTable_4756e236-4b32-4d85-a635-2a97fcefabda
+ref table fact_settlements
+ref table 'Trend Metric'
+
+ref cultureInfo en-US
+

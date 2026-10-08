@@ -1,0 +1,39 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "landing_footer",
+  "position": {
+    "x": 170,
+    "y": 935,
+    "z": 6,
+    "height": 55,
+    "width": 1500,
+    "tabOrder": 6
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Use the page tabs below to navigate. Apply slicers on analysis pages to focus the story.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI Italic",
+                      "fontSize": "13pt",
+                      "color": "#607386"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "left"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

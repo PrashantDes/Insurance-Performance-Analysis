@@ -1,0 +1,28 @@
+relationship 98054dbf-fefd-4a03-9508-848af2d73c3c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: dim_customer.dob
+	toColumn: LocalDateTable_704161f2-d81b-4a60-89b4-03b8fe2d4fd2.Date
+
+relationship 81f67288-9136-4647-846a-e728c01ec426
+	joinOnDateBehavior: datePartOnly
+	fromColumn: fact_premiums.date
+	toColumn: LocalDateTable_4756e236-4b32-4d85-a635-2a97fcefabda.Date
+
+relationship AutoDetected_2c0328d2-4e34-4a28-8c98-3805f644f80e
+	crossFilteringBehavior: bothDirections
+	fromCardinality: one
+	fromColumn: fact_premiums.customer_code
+	toColumn: dim_customer.customer_code
+
+relationship AutoDetected_e0c890c4-d59c-4413-8765-e34ed1f11c8d
+	fromColumn: fact_premiums.policy_id
+	toColumn: dim_policies.policy_id
+
+relationship fact_premiums_date_to_dim_date
+	fromColumn: fact_premiums.date
+	toColumn: dim_date.date_value
+
+relationship dim_customer_age_to_fact_settlements_age
+	fromColumn: dim_customer.age
+	toColumn: fact_settlements.age
+

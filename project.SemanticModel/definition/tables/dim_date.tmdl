@@ -1,0 +1,65 @@
+table dim_date
+	lineageTag: 84bd9877-3a27-4d32-893e-5419738d6acd
+
+	/// Days with at least one sale in the current filter context.
+	measure 'No of Days' = DISTINCTCOUNT(fact_premiums[date])
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: 853191ea-d4ad-402d-b856-9266c6458f1b
+
+	column date
+		dataType: string
+		lineageTag: 2cc64048-c050-4282-a02b-2271761dd8ff
+		summarizeBy: none
+		sourceColumn: date
+
+		annotation SummarizationSetBy = Automatic
+
+	column mmm_yy
+		dataType: string
+		lineageTag: 04594025-f641-4b12-a215-39d4954869be
+		summarizeBy: none
+		sourceColumn: mmm_yy
+		sortByColumn: month_sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column day_type
+		dataType: string
+		lineageTag: 3a6b8f5d-a8a1-486f-9923-31344ef1d0cb
+		summarizeBy: none
+		sourceColumn: day_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column week_no
+		dataType: int64
+		formatString: 0
+		lineageTag: 6fb3f342-8075-4ea4-b908-203e09fb1557
+		summarizeBy: sum
+		sourceColumn: week_no
+
+		annotation SummarizationSetBy = Automatic
+
+	column date_value = DATE(VALUE(RIGHT([date], 4)), VALUE(MID([date], 4, 2)), VALUE(LEFT([date], 2)))
+		dataType: dateTime
+		formatString: dd-mmm-yyyy
+		lineageTag: 0773e243-f136-46b6-bdb6-96ccfc87ca3c
+
+	column month_sort = YEAR([date_value]) * 100 + MONTH([date_value])
+		dataType: int64
+		formatString: 0
+		lineageTag: f7d58907-e519-49fb-b463-bd6d24828c97
+
+	partition dim_date = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\dim_date.csv"), [Delimiter = ",", Columns = 4, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"date", type text}, {"mmm_yy", type text}, {"day_type", type text}, {"week_no", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

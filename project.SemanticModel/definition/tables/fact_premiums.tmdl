@@ -1,0 +1,368 @@
+table fact_premiums
+	lineageTag: 6e9ae9c1-c24c-49cd-a778-5578775818c1
+
+	/// Total premium revenue (INR).
+	measure 'Total Revenue' = SUM(fact_premiums[final_premium_amt(INR)])
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: 22822d3f-ea71-4219-b872-09813011f7d3
+
+	/// Distinct customers who bought a policy.
+	measure 'Total Customers' = DISTINCTCOUNT(fact_premiums[customer_code])
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: 43555d1e-52ab-4a7d-bb55-c5b46e7135e2
+
+	/// Number of policies sold.
+	measure 'Total Policies Sold' = COUNTROWS(fact_premiums)
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: db040578-d39e-4a8e-903c-9af1796d38d5
+
+	/// Average revenue per selling day. Feeds the 'Daily Revenue Growth' card.
+	measure 'Avg Daily Revenue' = DIVIDE([Total Revenue], [No of Days])
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: 3670f890-307b-4411-8def-ebe087c2e529
+
+	/// Average customers per selling day. Feeds the 'Daily Customers Growth' card.
+	measure 'Avg Daily Customers' = DIVIDE([Total Customers], [No of Days])
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: 420b0fb8-8758-41e9-addf-aad4191cc15a
+
+	/// Total Revenue for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Total Revenue LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Total Revenue], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 8c1fb186-7e38-4185-8224-96212cc6384c
+
+	/// % change in Total Revenue vs last month.
+	measure 'Total Revenue %chg' = DIVIDE([Total Revenue] - [Total Revenue LM], [Total Revenue LM])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 8951afa7-0ec5-47eb-963f-5bcfbc5fa2c5
+
+	/// Total Customers for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Total Customers LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Total Customers], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 1772096c-0f13-4eb2-857e-e68f7de9fd01
+
+	/// % change in Total Customers vs last month.
+	measure 'Total Customers %chg' = DIVIDE([Total Customers] - [Total Customers LM], [Total Customers LM])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 9268ccc9-259b-40fc-8191-bd25caf3faf8
+
+	/// Avg Daily Revenue for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Avg Daily Revenue LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Avg Daily Revenue], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: bc254992-db28-477c-874d-a2d6acf8a824
+
+	/// % change in Avg Daily Revenue vs last month.
+	measure 'Avg Daily Revenue %chg' = DIVIDE([Avg Daily Revenue] - [Avg Daily Revenue LM], [Avg Daily Revenue LM])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 26b55883-5b78-430e-864f-0bb9c38ad9ce
+
+	/// Avg Daily Customers for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Avg Daily Customers LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Avg Daily Customers], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: fec0baaf-4101-49e2-a200-516aa97ebee8
+
+	/// % change in Avg Daily Customers vs last month.
+	measure 'Avg Daily Customers %chg' = DIVIDE([Avg Daily Customers] - [Avg Daily Customers LM], [Avg Daily Customers LM])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: fae4065e-ada3-455d-abd8-5f293527f99e
+
+	/// Policies sold in the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Total Policies Sold LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Total Policies Sold], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: b73336cc-5315-4968-91b7-e186217eaf75
+
+	/// Month-over-month % change in policies sold. Use in the monthly policy table.
+	measure 'Total Policies Sold MoM %' = DIVIDE([Total Policies Sold] - [Total Policies Sold LM], [Total Policies Sold LM])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: c4439640-be73-4752-94ee-c7caf3d295f3
+
+	/// Card sub-line text: 'LM: <last month revenue> (<%chg>)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Total Revenue LM Label' =
+			IF(
+			    ISBLANK([Total Revenue LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Total Revenue LM], "#,0") & " (" & FORMAT([Total Revenue %chg], "+0.0%;-0.0%;0.0%") & ")"
+			)
+		displayFolder: 2 Last Month Comparison
+		lineageTag: df7beede-3707-4053-b6cf-29f8a7f5f3cf
+
+	/// Card sub-line text: 'LM: <last month customers> (<%chg>)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Total Customers LM Label' =
+			IF(
+			    ISBLANK([Total Customers LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Total Customers LM], "#,0") & " (" & FORMAT([Total Customers %chg], "+0.0%;-0.0%;0.0%") & ")"
+			)
+		displayFolder: 2 Last Month Comparison
+		lineageTag: a4c92c54-b840-433f-96b6-e7b229a1281d
+
+	/// Card sub-line text: 'LM: <last month avg daily revenue> (<%chg>)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Avg Daily Revenue LM Label' =
+			IF(
+			    ISBLANK([Avg Daily Revenue LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Avg Daily Revenue LM], "#,0") & " (" & FORMAT([Avg Daily Revenue %chg], "+0.0%;-0.0%;0.0%") & ")"
+			)
+		displayFolder: 2 Last Month Comparison
+		lineageTag: fbf09d85-6041-46bc-838a-9104ee1d52ad
+
+	/// Card sub-line text: 'LM: <last month avg daily customers> (<%chg>)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Avg Daily Customers LM Label' =
+			IF(
+			    ISBLANK([Avg Daily Customers LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Avg Daily Customers LM], "#,0") & " (" & FORMAT([Avg Daily Customers %chg], "+0.0%;-0.0%;0.0%") & ")"
+			)
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 8faf9225-c952-4fc7-b4f1-a1ed270e6486
+
+	/// Share of revenue by sales mode, out of the sales modes currently selected. For the Sales Mode page and the age-group x sales-mode visual.
+	measure 'Revenue Split % by Sales Mode' =
+			DIVIDE(
+			    [Total Revenue],
+			    CALCULATE([Total Revenue], ALLSELECTED(fact_premiums[sales_mode]))
+			)
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: f21c0247-752b-4c92-b40b-6e64d21c5f59
+
+	/// Share of customers by sales mode, out of the sales modes currently selected.
+	measure 'Customers Split % by Sales Mode' =
+			DIVIDE(
+			    [Total Customers],
+			    CALCULATE([Total Customers], ALLSELECTED(fact_premiums[sales_mode]))
+			)
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: 002d71df-7d62-4e5d-9acc-4e8e212278b9
+
+	/// Share of policies sold that are each policy ID, within the current filter (for example one age group).
+	measure 'Policy Preference %' =
+			DIVIDE(
+			    [Total Policies Sold],
+			    CALCULATE([Total Policies Sold], REMOVEFILTERS(dim_policies[policy_id]))
+			)
+		formatString: 0.0%
+		displayFolder: 4 Age Group
+		lineageTag: c66c9a9c-ebfa-471b-8b06-ff405ab6c3d7
+
+	/// Hex colour for Total Revenue %chg text: green up, red down, Midnight if no last-month value. Use in Conditional formatting > Field value.
+	measure 'Total Revenue %chg Color' =
+			IF(
+			    ISBLANK([Total Revenue %chg]), "#14202E",
+			    IF([Total Revenue %chg] >= 0, "#2E9E6B", "#E5484D")
+			)
+		displayFolder: 5 Colours
+		lineageTag: a9fb980b-6df4-47a6-a64b-aeeece521165
+
+	/// Hex colour for Total Customers %chg text: green up, red down, Midnight if no last-month value.
+	measure 'Total Customers %chg Color' =
+			IF(
+			    ISBLANK([Total Customers %chg]), "#14202E",
+			    IF([Total Customers %chg] >= 0, "#2E9E6B", "#E5484D")
+			)
+		displayFolder: 5 Colours
+		lineageTag: 8d39ea88-5184-497f-ad60-467856e0e057
+
+	/// Hex colour for Avg Daily Revenue %chg text: green up, red down, Midnight if no last-month value.
+	measure 'Avg Daily Revenue %chg Color' =
+			IF(
+			    ISBLANK([Avg Daily Revenue %chg]), "#14202E",
+			    IF([Avg Daily Revenue %chg] >= 0, "#2E9E6B", "#E5484D")
+			)
+		displayFolder: 5 Colours
+		lineageTag: 3b967b39-acd0-4122-b465-80f9adbc55b2
+
+	/// Hex colour for Avg Daily Customers %chg text: green up, red down, Midnight if no last-month value.
+	measure 'Avg Daily Customers %chg Color' =
+			IF(
+			    ISBLANK([Avg Daily Customers %chg]), "#14202E",
+			    IF([Avg Daily Customers %chg] >= 0, "#2E9E6B", "#E5484D")
+			)
+		displayFolder: 5 Colours
+		lineageTag: f92ca750-b3a6-4e46-9548-13a715b6545b
+
+	/// Total premium revenue in millions (INR).
+	measure 'Total Revenue (Millions)' = DIVIDE([Total Revenue], 1000000)
+		formatString: #,##0.00 \M
+		displayFolder: 1 Key Metrics
+		lineageTag: 7a91dc45-ef21-482a-982c-0e28f114c001
+
+	/// Total premium revenue in millions (INR) - short alias.
+	measure 'Total Revenue (M)' = [Total Revenue (Millions)]
+		formatString: #,##0.00 \M
+		displayFolder: 1 Key Metrics
+		lineageTag: 8b02ef56-fa32-493b-a93d-1f39e225d002
+
+	/// Value for the trend line: Revenue or Customers depending on the Trend Metric slicer (Revenue if nothing or both are picked).
+	measure 'Trend Value' =
+			SWITCH(
+			    SELECTEDVALUE('Trend Metric'[Trend Metric Order], 0),
+			    1, [Total Customers],
+			    [Total Revenue]
+			)
+		formatString: #,0
+		displayFolder: 6 Trend Chart
+		lineageTag: a5b3d7e8-1c12-477a-a971-7f669f42de0a
+
+	/// Trend Value only in the month with the highest value. Draws the green Maximum point.
+	measure 'Trend Max Point' =
+			VAR _months = ALLSELECTED(dim_date[mmm_yy], dim_date[month_sort])
+			VAR _max = MAXX(_months, [Trend Value])
+			RETURN
+			IF([Trend Value] = _max, [Trend Value])
+		formatString: #,0
+		displayFolder: 6 Trend Chart
+		lineageTag: 0f82caf2-267a-41a8-a85d-adfa7299c54a
+
+	/// Trend Value only in the month with the lowest value. Draws the red Minimum point.
+	measure 'Trend Min Point' =
+			VAR _months = ALLSELECTED(dim_date[mmm_yy], dim_date[month_sort])
+			VAR _min = MINX(_months, [Trend Value])
+			RETURN
+			IF([Trend Value] = _min, [Trend Value])
+		formatString: #,0
+		displayFolder: 6 Trend Chart
+		lineageTag: 787a9829-60f7-48a3-9b04-296ffeb46c09
+
+	/// Trend Value only in the most recent month. Draws the Latest point.
+	measure 'Trend Latest Point' =
+			VAR _last = CALCULATE(MAX(dim_date[month_sort]), ALLSELECTED(dim_date))
+			RETURN
+			IF(MAX(dim_date[month_sort]) = _last, [Trend Value])
+		formatString: #,0
+		displayFolder: 6 Trend Chart
+		lineageTag: 33b1e9dd-65f3-419b-b592-3f2a3ea20e2f
+
+	/// Title text for the Maximum data label.
+	measure 'Trend Max Title' = "Maximum"
+		displayFolder: 6 Trend Chart
+		lineageTag: 42eac4d9-d0b8-4d83-906a-bfb84f3cb46e
+
+	/// Title text for the Minimum data label.
+	measure 'Trend Min Title' = "Minimum"
+		displayFolder: 6 Trend Chart
+		lineageTag: 20ec5a1e-7322-4b29-abee-2267b26a9cb7
+
+	/// Title text for the Latest data label.
+	measure 'Trend Latest Title' = "Latest"
+		displayFolder: 6 Trend Chart
+		lineageTag: 255bb063-b679-45ea-af31-e3fc0266095f
+
+	/// Month name shown under the value in the data labels (Detail field).
+	measure 'Trend Month Label' = SELECTEDVALUE(dim_date[mmm_yy])
+		displayFolder: 6 Trend Chart
+		lineageTag: 2c8c4468-7eed-49e9-9d07-d9eb27103725
+
+	/// Top of the Y axis: highest month x 1.25, so the callouts have room. Use in Y-axis > Range > Maximum > fx.
+	measure 'Trend Axis Max' = MAXX(ALLSELECTED(dim_date[mmm_yy], dim_date[month_sort]), [Trend Value]) * 1.25
+		formatString: #,0
+		displayFolder: 6 Trend Chart
+		lineageTag: 37f2c5ef-ec47-45ce-b8f1-77ccc3d4120d
+
+	/// Dynamic chart title that follows the Revenue/Customers switch.
+	measure 'Trend Chart Title' = IF(SELECTEDVALUE('Trend Metric'[Trend Metric Order], 0) = 1, "Customers", "Revenue") & " trend by month"
+		displayFolder: 6 Trend Chart
+		lineageTag: f6eb6f79-469d-474d-b41f-c0d00ce8267e
+
+	/// Dynamic subtitle showing the period in the chart.
+	measure 'Trend Chart Subtitle' = FORMAT(CALCULATE(MIN(dim_date[date_value]), ALLSELECTED(dim_date)), "mmm yyyy") & " to " & FORMAT(CALCULATE(MAX(dim_date[date_value]), ALLSELECTED(dim_date)), "mmm yyyy")
+		displayFolder: 6 Trend Chart
+		lineageTag: 4e0f7e7e-a6a0-4fc0-9901-2fdf8b33555a
+
+	column date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7909bcd8-733b-46c2-97a9-1db5d4c0ca2a
+		summarizeBy: none
+		sourceColumn: date
+
+		variation Variation
+			isDefault
+			relationship: 81f67288-9136-4647-846a-e728c01ec426
+			defaultHierarchy: LocalDateTable_4756e236-4b32-4d85-a635-2a97fcefabda.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column customer_code
+		dataType: string
+		lineageTag: a6e3bdaf-e1d8-46b1-b8bd-fcf8fafc31a7
+		summarizeBy: none
+		sourceColumn: customer_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column policy_id
+		dataType: string
+		lineageTag: 25623795-8fdc-4471-8700-4b85750f85df
+		summarizeBy: none
+		sourceColumn: policy_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column sales_mode
+		dataType: string
+		lineageTag: e0de748e-d315-4a30-aa29-2a90fd52f013
+		summarizeBy: none
+		sourceColumn: sales_mode
+
+		annotation SummarizationSetBy = Automatic
+
+	column final_premium_amt(INR)
+		dataType: int64
+		formatString: 0
+		lineageTag: 5ff69313-8a27-473c-a726-e12d999e39ea
+		summarizeBy: sum
+		sourceColumn: final_premium_amt(INR)
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_premiums = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\fact_premiums.csv"), [Delimiter = ",", Columns = 5, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"date", type date}, {"customer_code", type text}, {"policy_id", type text}, {"sales_mode", type text}, {"final_premium_amt(INR)", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+

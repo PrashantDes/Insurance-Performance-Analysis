@@ -1,0 +1,43 @@
+table 'Trend Metric'
+	lineageTag: 625e85dd-ccb6-4378-bf62-7f399f291a58
+
+	column 'Trend Metric Order'
+		dataType: int64
+		isHidden
+		formatString: 0
+		lineageTag: 5ba3f9cb-da10-41f5-8ebb-5e4864ff36b9
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+	column 'Trend Metric Fields'
+		dataType: string
+		isHidden
+		lineageTag: a624ba83-02ca-4ce5-aacf-4d9ec4626527
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Trend Metric Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+	column 'Trend Metric'
+		dataType: string
+		lineageTag: f5754be2-62b0-4be4-90d8-7d381f4a2b7f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Trend Metric Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Trend Metric Fields'
+
+	partition 'Trend Metric' = calculated
+		mode: import
+		source =
+				{
+				    ("Revenue", NAMEOF('fact_premiums'[Total Revenue]), 0),
+				    ("Customers", NAMEOF('fact_premiums'[Total Customers]), 1)
+				}
+

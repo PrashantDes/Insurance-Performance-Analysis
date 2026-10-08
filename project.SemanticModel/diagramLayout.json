@@ -1,0 +1,100 @@
+{
+  "version": "1.1.0",
+  "diagrams": [
+    {
+      "ordinal": 0,
+      "scrollPosition": {
+        "x": 105.58974241934504,
+        "y": 75.421244585246455
+      },
+      "nodes": [
+        {
+          "location": {
+            "x": 630.98895862656923,
+            "y": 370.72207289959863
+          },
+          "nodeIndex": "dim_customer",
+          "nodeLineageTag": "592791d3-996f-47f4-adce-0da142fc9f61",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 1
+        },
+        {
+          "location": {
+            "x": 50,
+            "y": -50
+          },
+          "nodeIndex": "dim_date",
+          "nodeLineageTag": "84bd9877-3a27-4d32-893e-5419738d6acd",
+          "size": {
+            "height": 248,
+            "width": 234
+          },
+          "zIndex": 2
+        },
+        {
+          "location": {
+            "x": 198.23752438703883,
+            "y": 571.07315711225192
+          },
+          "nodeIndex": "dim_policies",
+          "nodeLineageTag": "4a2d2199-ea4d-4a6e-9a25-955d5d1eca59",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 3
+        },
+        {
+          "location": {
+            "x": 336.82614427880151,
+            "y": 209.67282490568005
+          },
+          "nodeIndex": "fact_premiums",
+          "nodeLineageTag": "6e9ae9c1-c24c-49cd-a778-5578775818c1",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 915.20396917035532,
+            "y": 350.01307410491074
+          },
+          "nodeIndex": "fact_settlements",
+          "nodeLineageTag": "7d803bbc-f356-45df-af52-227f8466a699",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 714.77760227739725,
+            "y": 49.076263993938255
+          },
+          "nodeIndex": "Trend Metric",
+          "nodeLineageTag": "625e85dd-ccb6-4378-bf62-7f399f291a58",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 6
+        }
+      ],
+      "name": "All tables",
+      "zoomValue": 79.553182037699912,
+      "pinKeyFieldsToTop": false,
+      "showExtraHeaderInfo": false,
+      "hideKeyFieldsWhenCollapsed": false,
+      "tablesLocked": false
+    }
+  ],
+  "selectedDiagram": "All tables",
+  "defaultDiagram": "All tables"
+}
