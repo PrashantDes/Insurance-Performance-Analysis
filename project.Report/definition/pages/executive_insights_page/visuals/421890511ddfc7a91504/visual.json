@@ -1,0 +1,141 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "421890511ddfc7a91504",
+  "position": {
+    "x": 64.417520969245118,
+    "y": 623.929703102117,
+    "z": 17000,
+    "height": 353.3761150312875,
+    "width": 1511.0509918785783,
+    "tabOrder": 16000
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Online is taking over.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  },
+                  {
+                    "value": " App plus Website was 6% of customers in Nov and is 48% in Apr, while Offline-Direct fell from 29% to 6%. Offline-Agent is still the largest channel but down from 65% to 45%.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Two policies drive half the revenue.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  },
+                  {
+                    "value": " POL2005HEL (₹1 Cr cover) is 7.3% of policies but 32.8% of revenue. With POL1048HEL, the top two policies are 13.5% of volume and 49.7% of revenue. POL4321HEL is the most-sold policy (16.5%) but only 2.6% of revenue.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Premium per customer rises sharply with age.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  },
+                  {
+                    "value": " In April, 65+ customers pay about ₹1.02 lakh each against ₹31K for 31-40. The 65+ group is 6.5% of customers but 18% of revenue, and it also has the highest expected settlement (70.7% vs 37.7% for 18-24).",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "31-40 is the core segment.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  },
+                  {
+                    "value": " It is 57% of April customers and 48% of revenue.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Delhi NCR is the biggest market.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  },
+                  {
+                    "value": " It brings 39% of April revenue, while Indore has the highest premium per customer (about ₹41K).",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": "Mar-23 spike.",
+                    "textStyle": {
+                      "fontWeight": "bold",
+                      "fontSize": "18pt"
+                    }
+                  },
+                  {
+                    "value": " Revenue and customers both jumped sharply, which is likely a financial-year-end effect. That is my hypothesis, so confirm it with the client.",
+                    "textStyle": {
+                      "fontSize": "18pt"
+                    }
+                  }
+                ],
+                "listType": "bullet"
+              },
+              {
+                "textRuns": [
+                  {
+                    "value": ""
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

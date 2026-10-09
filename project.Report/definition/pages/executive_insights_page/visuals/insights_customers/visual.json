@@ -4,10 +4,10 @@
   "position": {
     "x": 510,
     "y": 225,
-    "z": 4000,
+    "z": 2000,
     "height": 205,
     "width": 400,
-    "tabOrder": 3000
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -70,6 +70,20 @@
           },
           "selector": {
             "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Total Customers"
           }
         }
       ]

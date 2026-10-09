@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "insights_title",
   "position": {
-    "x": 75,
-    "y": 40,
+    "x": 49.6935161762748,
+    "y": 12.883504193849021,
     "z": 1000,
-    "height": 70,
-    "width": 1200,
+    "height": 69.939022766608986,
+    "width": 379.14312341898551,
     "tabOrder": 0
   },
   "visual": {
@@ -23,7 +23,7 @@
                     "textStyle": {
                       "fontFamily": "Segoe UI Semibold",
                       "fontSize": "30pt",
-                      "color": "#14202E"
+                      "color": "#ffffff"
                     }
                   }
                 ]
@@ -34,5 +34,6 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  }
+  },
+  "parentGroupName": "99764304355f36096ada"
 }

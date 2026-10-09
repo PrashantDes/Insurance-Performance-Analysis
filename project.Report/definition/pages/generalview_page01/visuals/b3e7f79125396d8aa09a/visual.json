@@ -163,6 +163,20 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Total Customers"
+          }
         }
       ],
       "referenceLabelLayout": [
@@ -389,6 +403,21 @@
             ],
             "metadata": "fact_premiums.Total Customers",
             "id": "field-5c65664c-a9f5-2a8f-ccf2-e77ad87efa5a"
+          }
+        },
+        {
+          "properties": {
+            "valueDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Total Customers",
+            "id": "field-ab2e8899-247f-64a0-aa55-93adb6921b41"
           }
         }
       ]

@@ -163,6 +163,20 @@
           "selector": {
             "id": "default"
           }
+        },
+        {
+          "properties": {
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Avg Daily Revenue"
+          }
         }
       ],
       "referenceLabelLayout": [
@@ -389,6 +403,21 @@
             ],
             "metadata": "fact_premiums.Avg Daily Revenue",
             "id": "field-7df48ff6-8ecf-a9bd-6d2d-a55bc137f740"
+          }
+        },
+        {
+          "properties": {
+            "valuePrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Avg Daily Revenue",
+            "id": "field-a2417b3a-47e8-074d-29e4-a038d01a94ea"
           }
         }
       ]

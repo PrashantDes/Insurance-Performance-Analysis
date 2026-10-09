@@ -7,6 +7,8 @@ table fact_premiums
 		displayFolder: 1 Key Metrics
 		lineageTag: 22822d3f-ea71-4219-b872-09813011f7d3
 
+		annotation PBI_FormatHint = {"isDecimal":true}
+
 	/// Distinct customers who bought a policy.
 	measure 'Total Customers' = DISTINCTCOUNT(fact_premiums[customer_code])
 		formatString: #,0
@@ -305,6 +307,258 @@ table fact_premiums
 		displayFolder: 6 Trend Chart
 		lineageTag: 4e0f7e7e-a6a0-4fc0-9901-2fdf8b33555a
 
+	/// Average premium paid per customer (INR). Every customer holds exactly one policy, so this equals the average premium per policy. Use instead of the Policies Sold card.
+	measure 'Avg Premium per Customer' = DIVIDE([Total Revenue], [Total Customers])
+		formatString: #,0
+		displayFolder: 1 Key Metrics
+		lineageTag: 38d6745c-2640-4361-a864-d7c26110bde9
+
+	/// Average monthly revenue of all months before the selected month. Blank unless exactly one month is selected. A steadier baseline than last month alone when last month was an outlier.
+	measure 'Total Revenue Prior Avg' =
+			VAR _cur = MAX(dim_date[month_sort])
+			VAR _prior = FILTER(ALL(dim_date[mmm_yy], dim_date[month_sort]), dim_date[month_sort] < _cur)
+			VAR _n = COUNTROWS(_prior)
+			RETURN
+			IF(HASONEVALUE(dim_date[mmm_yy]) && _n > 0, DIVIDE(CALCULATE([Total Revenue], _prior), _n))
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 86ce0291-647c-497b-9a6a-8154db5c9519
+
+	/// % difference of the selected month's revenue vs the average of all earlier months.
+	measure 'Total Revenue vs Prior Avg %' = DIVIDE([Total Revenue] - [Total Revenue Prior Avg], [Total Revenue Prior Avg])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 8de781a9-1081-434d-98c7-02347f420f83
+
+	/// Average monthly customers of all months before the selected month. Blank unless exactly one month is selected.
+	measure 'Total Customers Prior Avg' =
+			VAR _cur = MAX(dim_date[month_sort])
+			VAR _prior = FILTER(ALL(dim_date[mmm_yy], dim_date[month_sort]), dim_date[month_sort] < _cur)
+			VAR _n = COUNTROWS(_prior)
+			RETURN
+			IF(HASONEVALUE(dim_date[mmm_yy]) && _n > 0, DIVIDE(CALCULATE([Total Customers], _prior), _n))
+		formatString: #,0
+		displayFolder: 2 Last Month Comparison
+		lineageTag: fe8058d6-d266-45c4-8f33-ba7c65c18f53
+
+	/// % difference of the selected month's customers vs the average of all earlier months.
+	measure 'Total Customers vs Prior Avg %' = DIVIDE([Total Customers] - [Total Customers Prior Avg], [Total Customers Prior Avg])
+		formatString: +0.0%;-0.0%;0.0%
+		displayFolder: 2 Last Month Comparison
+		lineageTag: e8c8f567-404c-4182-9ae5-a59a47d2e480
+
+	/// Card sub-line text for the baseline comparison. Shows '-' unless exactly one month is selected.
+	measure 'Total Revenue vs Prior Avg Label' =
+			IF(
+			    ISBLANK([Total Revenue Prior Avg]),
+			    "vs prior-month avg: -",
+			    "vs prior-month avg: " & FORMAT([Total Revenue Prior Avg] / 1000000, "#,0.0") & "M (" & FORMAT([Total Revenue vs Prior Avg %], "+0.0%;-0.0%;0.0%") & ")"
+			)
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 1b105ad6-78ac-4db7-b52e-60de0f525551
+
+	/// Warning text shown when the month before the selected month is the highest-revenue month, since the MoM % is then inflated by a base effect. Blank otherwise.
+	measure 'LM Base Effect Note' =
+			VAR _peak = MAXX(ALL(dim_date[mmm_yy], dim_date[month_sort]), [Total Revenue])
+			RETURN
+			IF(
+			    NOT ISBLANK([Total Revenue LM]) && [Total Revenue LM] = _peak,
+			    "Note: last month was the peak month, so the % change vs last month is overstated.",
+			    ""
+			)
+		displayFolder: 2 Last Month Comparison
+		lineageTag: 183c17e4-880a-47db-a757-6c8897611fdf
+
+	/// Distinct customers who bought through an online channel (Online-App or Online-Website). Respects the Sales Mode slicer.
+	measure 'Online Customers' = CALCULATE([Total Customers], KEEPFILTERS(fact_premiums[sales_mode] IN {"Online-App", "Online-Website"}))
+		formatString: #,0
+		displayFolder: 3 Sales Mode
+		lineageTag: 5f7d7aca-b158-48d9-ad27-377c94629e6e
+
+	/// Share of customers who bought online (App + Website). KPI card for the Sales page.
+	measure 'Online Customers %' = DIVIDE([Online Customers], [Total Customers])
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: e0fcf4f6-fe24-4b2a-84f1-4fb7166a6588
+
+	/// Premium revenue from online channels (Online-App + Online-Website). Respects the Sales Mode slicer.
+	measure 'Online Revenue' = CALCULATE([Total Revenue], KEEPFILTERS(fact_premiums[sales_mode] IN {"Online-App", "Online-Website"}))
+		formatString: #,0
+		displayFolder: 3 Sales Mode
+		lineageTag: f96249d7-d179-4634-a3ce-9f13ca940b1b
+
+	/// Share of revenue from online channels (App + Website). KPI card for the Sales page.
+	measure 'Online Revenue %' = DIVIDE([Online Revenue], [Total Revenue])
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: 40cee1be-ec37-4b7c-a03d-0083e7b9f412
+
+	/// Online Customers % for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Online Customers % LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Online Customers %], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: 0e1fe871-384a-4401-9fdd-00e9202b9fb1
+
+	/// Change in Online Customers % vs last month, in percentage points (not %).
+	measure 'Online Customers % chg (pp)' =
+			IF(
+			    NOT ISBLANK([Online Customers % LM]),
+			    ([Online Customers %] - [Online Customers % LM]) * 100
+			)
+		formatString: +0.0" pp";-0.0" pp";0.0" pp"
+		displayFolder: 3 Sales Mode
+		lineageTag: d62d9ef6-e828-4fb4-9e1a-f498a2b736a8
+
+	/// Card sub-line text: 'LM: 37.5% (+10.9 pp)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Online Customers % LM Label' =
+			IF(
+			    ISBLANK([Online Customers % LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Online Customers % LM], "0.0%") & " (" & FORMAT([Online Customers % chg (pp)], "+0.0;-0.0;0.0") & " pp)"
+			)
+		displayFolder: 3 Sales Mode
+		lineageTag: 193f1042-d901-44dd-9427-932fe51891f2
+
+	/// Online Revenue % for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Online Revenue % LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Online Revenue %], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: 69a021c5-3807-4ee5-8317-450ef772d7c7
+
+	/// Change in Online Revenue % vs last month, in percentage points (not %).
+	measure 'Online Revenue % chg (pp)' =
+			IF(
+			    NOT ISBLANK([Online Revenue % LM]),
+			    ([Online Revenue %] - [Online Revenue % LM]) * 100
+			)
+		formatString: +0.0" pp";-0.0" pp";0.0" pp"
+		displayFolder: 3 Sales Mode
+		lineageTag: a7393699-4bab-4cd0-9904-7a1a334bfb45
+
+	/// Card sub-line text: 'LM: 36.8% (+10.7 pp)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Online Revenue % LM Label' =
+			IF(
+			    ISBLANK([Online Revenue % LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Online Revenue % LM], "0.0%") & " (" & FORMAT([Online Revenue % chg (pp)], "+0.0;-0.0;0.0") & " pp)"
+			)
+		displayFolder: 3 Sales Mode
+		lineageTag: ff7a64b1-1c96-4ed6-8a2a-44f6d271791a
+
+	/// Name of the sales mode with the highest revenue in the current filter.
+	measure 'Top Sales Mode' =
+			VAR _t = ADDCOLUMNS(VALUES(fact_premiums[sales_mode]), "@rev", [Total Revenue])
+			RETURN
+			MAXX(TOPN(1, _t, [@rev], DESC), fact_premiums[sales_mode])
+		displayFolder: 3 Sales Mode
+		lineageTag: 27559f1e-3ee5-4c88-863c-a6265b105b1b
+
+	/// Share of revenue held by the top sales mode in the current filter.
+	measure 'Top Sales Mode Revenue %' =
+			VAR _t = ADDCOLUMNS(VALUES(fact_premiums[sales_mode]), "@rev", [Total Revenue])
+			RETURN
+			DIVIDE(MAXX(TOPN(1, _t, [@rev], DESC), [@rev]), [Total Revenue])
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: a56d6566-222e-4390-a48a-8d8a0d4f9dd9
+
+	/// Card text: 'Offline-Agent (44.9% of revenue)'.
+	measure 'Top Sales Mode Label' = [Top Sales Mode] & " (" & FORMAT([Top Sales Mode Revenue %], "0.0%") & " of revenue)"
+		displayFolder: 3 Sales Mode
+		lineageTag: 8e8ead92-651f-4893-9a86-c7f7cefda083
+
+	/// Distinct customers who bought through an offline channel (Offline-Agent or Offline-Direct). Respects the Sales Mode slicer.
+	measure 'Offline Customers' = CALCULATE([Total Customers], KEEPFILTERS(fact_premiums[sales_mode] IN {"Offline-Agent", "Offline-Direct"}))
+		formatString: #,0
+		displayFolder: 3 Sales Mode
+		lineageTag: 0ece1675-5b5c-434e-b012-b040d04f56dd
+
+	/// Share of customers who bought offline (Agent + Direct). KPI card for the Sales page.
+	measure 'Offline Customers %' = DIVIDE([Offline Customers], [Total Customers])
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: 5316f0b4-ff2b-4598-9373-c1a9763890c3
+
+	/// Premium revenue from offline channels (Offline-Agent + Offline-Direct). Respects the Sales Mode slicer.
+	measure 'Offline Revenue' = CALCULATE([Total Revenue], KEEPFILTERS(fact_premiums[sales_mode] IN {"Offline-Agent", "Offline-Direct"}))
+		formatString: #,0
+		displayFolder: 3 Sales Mode
+		lineageTag: 17c0b51f-0f4d-4b7b-a43d-4368a457190d
+
+	/// Share of revenue from offline channels (Agent + Direct). KPI card for the Sales page.
+	measure 'Offline Revenue %' = DIVIDE([Offline Revenue], [Total Revenue])
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: 30e199ea-3aea-4cf9-a3fa-21850a1c44c7
+
+	/// Offline Customers % for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Offline Customers % LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Offline Customers %], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: c28a2ce2-2984-416c-bb36-d839670112c6
+
+	/// Change in Offline Customers % vs last month, in percentage points (not %).
+	measure 'Offline Customers % chg (pp)' =
+			IF(
+			    NOT ISBLANK([Offline Customers % LM]),
+			    ([Offline Customers %] - [Offline Customers % LM]) * 100
+			)
+		formatString: +0.0" pp";-0.0" pp";0.0" pp"
+		displayFolder: 3 Sales Mode
+		lineageTag: 52e3f022-f727-4b9b-914c-5e95e2ae2549
+
+	/// Card sub-line text: 'LM: 62.5% (-10.9 pp)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Offline Customers % LM Label' =
+			IF(
+			    ISBLANK([Offline Customers % LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Offline Customers % LM], "0.0%") & " (" & FORMAT([Offline Customers % chg (pp)], "+0.0;-0.0;0.0") & " pp)"
+			)
+		displayFolder: 3 Sales Mode
+		lineageTag: c2f83c32-a005-43fc-841a-870e328f1c94
+
+	/// Offline Revenue % for the month before the selected month. Blank unless exactly one month is selected.
+	measure 'Offline Revenue % LM' =
+			IF(
+			    HASONEVALUE(dim_date[mmm_yy]),
+			    CALCULATE([Offline Revenue %], DATEADD(dim_date[date_value], -1, MONTH))
+			)
+		formatString: 0.0%
+		displayFolder: 3 Sales Mode
+		lineageTag: fde1cd16-1c14-4290-a472-f0fce4fdcafb
+
+	/// Change in Offline Revenue % vs last month, in percentage points (not %).
+	measure 'Offline Revenue % chg (pp)' =
+			IF(
+			    NOT ISBLANK([Offline Revenue % LM]),
+			    ([Offline Revenue %] - [Offline Revenue % LM]) * 100
+			)
+		formatString: +0.0" pp";-0.0" pp";0.0" pp"
+		displayFolder: 3 Sales Mode
+		lineageTag: a6db4bc2-4dd9-491c-bcc2-74a815481225
+
+	/// Card sub-line text: 'LM: 62.0% (-10.6 pp)'. Shows 'LM: -' unless exactly one month is selected.
+	measure 'Offline Revenue % LM Label' =
+			IF(
+			    ISBLANK([Offline Revenue % LM]),
+			    "LM: -",
+			    "LM: " & FORMAT([Offline Revenue % LM], "0.0%") & " (" & FORMAT([Offline Revenue % chg (pp)], "+0.0;-0.0;0.0") & " pp)"
+			)
+		displayFolder: 3 Sales Mode
+		lineageTag: cdd70c6f-027c-4ffe-a4aa-58c4356eddee
+
 	column date
 		dataType: dateTime
 		formatString: Long Date
@@ -358,7 +612,7 @@ table fact_premiums
 		mode: import
 		source =
 				let
-				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\fact_premiums.csv"), [Delimiter = ",", Columns = 5, QuoteStyle = QuoteStyle.None]),
+				  Source = Csv.Document(File.Contents("D:\study material\projects\insurance performance analysis\data\fact_premiums.csv"), [Delimiter = ",", Columns = 5, QuoteStyle = QuoteStyle.None]),
 				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"date", type date}, {"customer_code", type text}, {"policy_id", type text}, {"sales_mode", type text}, {"final_premium_amt(INR)", Int64.Type}})
 				in

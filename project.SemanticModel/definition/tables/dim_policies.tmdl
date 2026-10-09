@@ -31,7 +31,7 @@ table dim_policies
 		mode: import
 		source =
 				let
-				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\dim_policies.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
+				  Source = Csv.Document(File.Contents("D:\study material\projects\insurance performance analysis\data\dim_policies.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
 				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"policy_id", type text}, {"base_coverage_amt(INR)", Int64.Type}, {"base_premium_amt(INR)", Int64.Type}})
 				in

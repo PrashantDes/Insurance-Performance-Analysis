@@ -204,7 +204,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "18D"
                 }
               }
             },
@@ -212,6 +212,13 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Expected Settlement Rate by Age Group'"
                 }
               }
             }

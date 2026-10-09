@@ -5,7 +5,7 @@
     "x": 193.25256290773532,
     "y": 590.80069231793379,
     "z": 8000,
-    "height": 390.18612701371325,
+    "height": 430.67714019438159,
     "width": 861.35428038876319,
     "tabOrder": 7000
   },
@@ -537,7 +537,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "18D"
                 }
               }
             },
@@ -545,6 +545,13 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Policy Preference by Age Group'"
                 }
               }
             }

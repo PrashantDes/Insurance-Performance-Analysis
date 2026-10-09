@@ -95,10 +95,10 @@
                     "Entity": "fact_premiums"
                   }
                 },
-                "Property": "Total Revenue (Millions)"
+                "Property": "Total Customers"
               }
             },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
         ]
       }

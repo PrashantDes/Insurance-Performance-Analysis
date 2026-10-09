@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "insights_intro",
   "position": {
-    "x": 78,
-    "y": 112,
-    "z": 2000,
-    "height": 60,
-    "width": 1500,
-    "tabOrder": 1000
+    "x": 75.460524563972839,
+    "y": 128.83504193849024,
+    "z": 0,
+    "height": 58.896019171881242,
+    "width": 1500.0079882838504,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "textbox",

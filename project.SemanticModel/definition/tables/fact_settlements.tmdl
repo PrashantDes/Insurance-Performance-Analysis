@@ -32,7 +32,7 @@ table fact_settlements
 		mode: import
 		source =
 				let
-				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\fact_settlements.csv"), [Delimiter = ",", Columns = 3, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
+				  Source = Csv.Document(File.Contents("D:\study material\projects\insurance performance analysis\data\fact_settlements.csv"), [Delimiter = ",", Columns = 3, Encoding = 65001, QuoteStyle = QuoteStyle.None]),
 				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"age", Int64.Type}, {"settlement %", Percentage.Type}, {"", type text}})
 				in

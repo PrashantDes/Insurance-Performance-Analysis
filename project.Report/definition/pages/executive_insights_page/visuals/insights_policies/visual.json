@@ -4,10 +4,10 @@
   "position": {
     "x": 940,
     "y": 225,
-    "z": 5000,
+    "z": 3000,
     "height": 205,
     "width": 400,
-    "tabOrder": 4000
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,14 +23,32 @@
                       "Entity": "fact_premiums"
                     }
                   },
-                  "Property": "Total Policies Sold"
+                  "Property": "Avg Premium per Customer"
                 }
               },
-              "queryRef": "fact_premiums.Total Policies Sold",
-              "nativeQueryRef": "Total Policies Sold"
+              "queryRef": "fact_premiums.Avg Premium per Customer",
+              "nativeQueryRef": "Avg Premium per Customer"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_premiums"
+                  }
+                },
+                "Property": "Avg Premium per Customer"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
       }
     },
     "objects": {
@@ -70,6 +88,20 @@
           },
           "selector": {
             "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Avg Premium per Customer"
           }
         }
       ]

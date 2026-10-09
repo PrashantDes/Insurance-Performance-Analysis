@@ -7,6 +7,18 @@ table dim_customer
 		displayFolder: 4 Age Group
 		lineageTag: dea6a3c5-0582-4805-bf42-ce828db55b1b
 
+	/// Footnote for the Age Group page: counts customers aged 17 that sit in the 18-24 bucket in the current filter. They are counted in customers and revenue but have no settlement rate. Blank when none.
+	measure 'Age Group Footnote' =
+			VAR _n = CALCULATE([Total Customers], dim_customer[age] < 18)
+			RETURN
+			IF(
+			    _n > 0,
+			    "Note: 18-24 includes " & FORMAT(_n, "#,0") & " customers aged 17. They are counted in customers and revenue but have no settlement rate, so they are not in Expected Settlement %.",
+			    ""
+			)
+		displayFolder: 4 Age Group
+		lineageTag: 8dcc854c-08fc-495e-b85c-585d9b1b3733
+
 	column customer_code
 		dataType: string
 		lineageTag: ab722569-7ed8-4ec8-b5a3-1b11f374dc9d
@@ -75,7 +87,7 @@ table dim_customer
 		mode: import
 		source =
 				let
-				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\dim_customer.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
+				  Source = Csv.Document(File.Contents("D:\study material\projects\insurance performance analysis\data\dim_customer.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
 				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"customer_code", type text}, {"dob", type date}, {"city", type text}})
 				in

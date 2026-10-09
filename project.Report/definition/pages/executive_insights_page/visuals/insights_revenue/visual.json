@@ -4,10 +4,10 @@
   "position": {
     "x": 80,
     "y": 225,
-    "z": 3000,
+    "z": 1000,
     "height": 205,
     "width": 400,
-    "tabOrder": 2000
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -70,6 +70,20 @@
           },
           "selector": {
             "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Total Revenue"
           }
         }
       ]

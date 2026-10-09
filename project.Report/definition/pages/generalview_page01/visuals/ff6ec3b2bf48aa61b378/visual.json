@@ -259,6 +259,21 @@
             "metadata": "fact_premiums.Total Revenue",
             "id": "field-098e28ec-d161-04ce-8d3e-18e2d89ec543"
           }
+        },
+        {
+          "properties": {
+            "valuePrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Total Revenue",
+            "id": "field-4bac1fcd-9598-4393-2663-972133aa19b7"
+          }
         }
       ],
       "referenceLabelTitle": [
@@ -390,6 +405,20 @@
           },
           "selector": {
             "id": "default"
+          }
+        },
+        {
+          "properties": {
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "fact_premiums.Total Revenue"
           }
         }
       ],

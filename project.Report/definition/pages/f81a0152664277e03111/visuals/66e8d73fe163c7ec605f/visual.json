@@ -401,7 +401,7 @@
             "fontSize": {
               "expr": {
                 "Literal": {
-                  "Value": "20D"
+                  "Value": "18D"
                 }
               }
             },
@@ -409,6 +409,13 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Customers by Age Group & Sales Mode'"
                 }
               }
             }
@@ -517,13 +524,6 @@
       "padding": [
         {
           "properties": {
-            "top": {
-              "expr": {
-                "Literal": {
-                  "Value": "14D"
-                }
-              }
-            },
             "bottom": {
               "expr": {
                 "Literal": {
@@ -539,6 +539,13 @@
               }
             },
             "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "16D"
+                }
+              }
+            },
+            "top": {
               "expr": {
                 "Literal": {
                   "Value": "16D"

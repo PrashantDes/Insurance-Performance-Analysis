@@ -19,15 +19,14 @@
               {
                 "textRuns": [
                   {
-                    "value": "Use the page tabs below to navigate. Apply slicers on analysis pages to focus the story.",
+                    "value": "Use the icons above to navigate. Apply slicers on analysis pages to focus the story.",
                     "textStyle": {
                       "fontFamily": "Segoe UI Italic",
                       "fontSize": "13pt",
                       "color": "#607386"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "left"
+                ]
               }
             ]
           }

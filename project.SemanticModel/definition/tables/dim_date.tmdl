@@ -7,6 +7,19 @@ table dim_date
 		displayFolder: 1 Key Metrics
 		lineageTag: 853191ea-d4ad-402d-b856-9266c6458f1b
 
+	/// Text label for the period currently in filter, e.g. 'Period: Nov 2022 - Apr 2023' or 'Period: Apr 2023'. Put on every page so the time frame is explicit.
+	measure 'Report Period Label' =
+			VAR _min = MIN(dim_date[date_value])
+			VAR _max = MAX(dim_date[date_value])
+			RETURN
+			IF(
+			    FORMAT(_min, "mmm yyyy") = FORMAT(_max, "mmm yyyy"),
+			    "Period: " & FORMAT(_min, "mmm yyyy"),
+			    "Period: " & FORMAT(_min, "mmm yyyy") & " - " & FORMAT(_max, "mmm yyyy")
+			)
+		displayFolder: 1 Key Metrics
+		lineageTag: 15e54938-809d-4c49-887d-0626675999a3
+
 	column date
 		dataType: string
 		lineageTag: 2cc64048-c050-4282-a02b-2271761dd8ff
@@ -55,7 +68,7 @@ table dim_date
 		mode: import
 		source =
 				let
-				  Source = Csv.Document(File.Contents("D:\study material\projects\New project\data\dim_date.csv"), [Delimiter = ",", Columns = 4, QuoteStyle = QuoteStyle.None]),
+				  Source = Csv.Document(File.Contents("D:\study material\projects\insurance performance analysis\data\dim_date.csv"), [Delimiter = ",", Columns = 4, QuoteStyle = QuoteStyle.None]),
 				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
 				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"date", type text}, {"mmm_yy", type text}, {"day_type", type text}, {"week_no", Int64.Type}})
 				in
